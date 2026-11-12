@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Site Admin — Nabil</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="auth-card" id="authCard" hidden>
+      <div class="brand-mark">NN</div>
+      <p class="eyebrow">NABIL NAGY NABEEL</p>
+      <h1 id="authTitle">Admin sign in</h1>
+      <p class="muted" id="authHint">Manage your website content securely.</p>
+      <form id="setupForm" hidden>
+        <label>Admin username<input name="username" autocomplete="username" minlength="3" required></label>
+        <label>Admin email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Password<input name="password" type="password" autocomplete="new-password" minlength="12" required></label>
+        <label>Confirm password<input name="confirmPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+        <button class="button primary" type="submit">Create primary admin</button>
+      </form>
+      <form id="loginForm" hidden>
+        <label>Username or email<input name="identity" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button class="button primary" type="submit">Sign in</button>
+      </form>
+      <p class="notice" id="authMessage" role="status"></p>
+      <a class="back-link" href="/">← View the website</a>
+    </section>
+
+    <section id="dashboard" hidden>
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark small">NN</span><div><strong>Website Admin</strong><small id="signedInAs"></small></div></div>
+        <div class="top-actions"><a class="button ghost" href="/" target="_blank" rel="noopener">View website ↗</a><button class="button ghost" id="logoutButton" type="button">Sign out</button></div>
+      </header>
+      <div class="layout">
+        <aside class="sidebar">
+          <button class="side-link active" data-tab="content" type="button">Content manager</button>
+          <button class="side-link" data-tab="settings" type="button">Website settings</button>
+          <div class="side-note"><strong>Primary admin</strong><p>This local version uses one owner account. Add other admin roles after connecting a production backend.</p></div>
+        </aside>
+        <div class="main-area">
+          <section class="tab-panel" id="contentPanel">
+            <div class="page-heading"><div><p class="eyebrow">PUBLISH AND EDIT</p><h1>Content manager</h1><p class="muted">Add a course, project, certificate, article, video, service, experience, or skill. Published items appear on the website.</p></div><button class="button primary" id="newContentButton" type="button">＋ Add content</button></div>
+            <div class="content-layout">
+              <section class="editor-card">
+                <div class="card-title"><div><h2 id="editorTitle">Add content</h2><p class="muted">Fields marked with * are required.</p></div><button class="text-button" id="clearFormButton" type="button">Clear</button></div>
+                <form id="contentForm">
+                  <input type="hidden" name="id">
+                  <div class="form-grid">
+                    <label>Content type *<select name="kind" required><option value="projects">Project</option><option value="courses">Course</option><option value="certificates">Certificate</option><option value="articles">Article</option><option value="videos">Video</option><option value="services">Service</option><option value="experiences">Experience</option><option value="skills">Skill</option></select></label>
+                    <label>Display order<input name="sort_order" type="number" value="0"></label>
+                    <label>Title in Arabic *<input name="title_ar" maxlength="180" required></label>
+                    <label>Title in English<input name="title_en" maxlength="180"></label>
+                    <label>Short description in Arabic<textarea name="summary_ar" rows="3" maxlength="500"></textarea></label>
+                    <label>Short description in English<textarea name="summary_en" rows="3" maxlength="500"></textarea></label>
+                    <label>Full details in Arabic<textarea name="body_ar" rows="5" maxlength="12000"></textarea></label>
+                    <label>Full details in English<textarea name="body_en" rows="5" maxlength="12000"></textarea></label>
+                    <label>Image URL<input name="image_url" type="url" maxlength="1500" placeholder="https://..."></label>
+                    <label>Project/course link<input name="link_url" type="url" maxlength="1500" placeholder="https://..."></label>
+                    <label>Tags (comma separated)<input name="tags" maxlength="500" placeholder="Web, JavaScript, Database"></label>
+                    <label>Language<input name="language" maxlength="50" placeholder="Arabic / English"></label>
+                    <label>Price<input name="price" maxlength="50" placeholder="Optional"></label>
+                    <label>Duration<input name="duration" maxlength="80" placeholder="Optional"></label>
+                  </div>
+                  <label class="check-row"><input name="published" type="checkbox" checked> Publish this item on the website</label>
+                  <div class="form-actions"><button class="button primary" type="submit">Save content</button><span class="muted" id="formMessage" role="status"></span></div>
+                </form>
+              </section>
+              <section class="list-card">
+                <div class="card-title"><div><h2>Saved content</h2><p class="muted">Items from GitHub are synced automatically.</p></div><select id="kindFilter" aria-label="Filter content"><option value="">All types</option><option value="projects">Projects</option><option value="courses">Courses</option><option value="certificates">Certificates</option><option value="articles">Articles</option><option value="videos">Videos</option><option value="services">Services</option><option value="experiences">Experiences</option><option value="skills">Skills</option></select></div>
+                <div id="contentList" class="content-list"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="settingsPanel" hidden>
+            <div class="page-heading"><div><p class="eyebrow">PROFILE AND CONNECTIONS</p><h1>Website settings</h1><p class="muted">Changes are saved to the site database and show on the public page.</p></div></div>
+            <section class="editor-card settings-card">
+              <form id="settingsForm">
+                <h2>Profile and contact information</h2>
+                <div class="form-grid">
+                  <label>Name in Arabic<input name="name_ar" required></label><label>Name in English<input name="name_en" required></label>
+                  <label>Headline in Arabic<input name="headline_ar"></label><label>Headline in English<input name="headline_en"></label>
+                  <label>Bio in Arabic<textarea name="bio_ar" rows="4"></textarea></label><label>Bio in English<textarea name="bio_en" rows="4"></textarea></label>
+                  <label>College in Arabic<input name="education_ar"></label><label>College in English<input name="education_en"></label>
+                  <label>University in Arabic<input name="university_ar"></label><label>University in English<input name="university_en"></label>
+                  <label>Profile image URL<input name="profile_image" placeholder="profile.jpg or https://..."></label><label>Contact email<input name="email" type="email"></label>
+                  <label>Phone number<input name="phone"></label><label>WhatsApp number with country code<input name="whatsapp" placeholder="2010..." dir="ltr"></label>
+                  <label>GitHub username<input name="github_username" placeholder="your-username" dir="ltr"></label><label>Facebook URL<input name="facebook" type="url"></label>
+                  <label>Instagram URL<input name="instagram" type="url"></label><label>TikTok URL<input name="tiktok" type="url"></label>
+                  <label>Availability in Arabic<input name="availability_ar"></label><label>Availability in English<input name="availability_en"></label>
+                </div>
+                <div class="form-actions"><button class="button primary" type="submit">Save settings</button><span class="muted" id="settingsMessage" role="status"></span></div>
+              </form>
+              <div class="github-box"><div><h2>GitHub project sync</h2><p class="muted">Public, non-fork repositories from this account appear automatically as projects. Private repositories are never imported.</p><p class="muted" id="githubStatus"></p></div><button class="button secondary" id="syncGithubButton" type="button">Sync now</button></div>
+            </section>
+          </section>
+        </div>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="admin.js" defer></script>
+</body>
+</html>
